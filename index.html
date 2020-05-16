@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Shopping List App</title>
+        <link rel="stylesheet" href="main.css">
+        
+    </head>
+    <body>
+        <div id="shopping-list">
+            <div class="header">
+                <h1>{{ header.toLocaleUpperCase() }}</h1>
+                <!-- Tombol add item untuk ganti state -> edit -->
+                <button v-if="state === 'default'" class="btn btn-primary" @click="changeState('edit')">Add Item</button>
+                <!-- Tombol cancel untuk ganti state -> default -->
+                <button v-else class="btn btn-cancel" @click="changeState('default')" >Cancel</button>
+            </div>         
+            
+            <!-- state form terlaksana / true saat === edit -->
+            <div v-if="state === 'edit'" class="add-item-form">
+                <input v-model="newItem" type="text" placeholder="Add an item" @keyup.enter="items.push(newItem)">
+                <p>{{ characterCount}}/200</p>
+                <!-- Tombol save item, jika form kosong tidak bisa klik tombol/input data -->
+                <button class="btn btn-primary" v-bind:disabled="newItem.length === 0" @click="saveItem">Save Item</button>
+            </div>
+
+            <ul>
+                <!-- Menambahkan dynamic classess (jenis kelas yang bisa diubah dengan clicking) -->
+                <li v-for="item in reversedItems" :class="{strikeout: item.purchased}" @click="togglePurchased(item)">{{ item.label }}</li>
+            </ul>
+
+            <!-- Pesan kalau tidak ada pesanan / pesanan kosong -->
+            <p v-if="items.length === 0">Nice job! You've bought all your items</p> 
+        </div>
+
+        <script src="https://unpkg.com/vue"></script>
+        <script src="app.js"></script>
+
+    </body>
+</html> 
